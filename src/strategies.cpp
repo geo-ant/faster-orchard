@@ -1,32 +1,31 @@
 #include "strategies.hpp"
 #include "game.hpp"
 #include <cstdint>
+#include <tuple>
+
+std::tuple<uint8_t,uint8_t> max_idx(GameState game) {
+  uint8_t max = game.fruits[0];
+  uint8_t idx = 0;
+  for (uint8_t i = 1; i < 4; i++) {
+    if (game.fruits[i] > max) {
+      max = game.fruits[i];
+      idx = i;
+    }
+  }
+  return std::make_tuple(max, idx);
+}
 
 
 //@todo this seems to have a bug, but maybe my calculations were wrong
 GameState pick_from_fullest(GameState game) {
-  uint8_t max = game.fruits[0];
-  uint8_t max_index = 0;
-  uint8_t second_max = game.fruits[1];
-  uint8_t second_max_index = 1;
-  for (uint8_t i = 0; i < 4; i++) {
-    if (game.fruits[i] > max) {
-      second_max = max;
-      second_max_index = max_index;
-      max = game.fruits[i];
-      max_index = i;
-    }
-  }
-  
-  if (max-second_max >= 2) {
-    game.fruits[max_index]-=2;
-  } else if (max>0 && second_max>0) {
-    game.fruits[max_index]--;
-    game.fruits[second_max_index]--;
-  } else if (max>0) {
-    game.fruits[max_index]--;
-  } else {}
-
+   auto [max, idx] = max_idx(game); 
+   if (max > 0) {
+     game.fruits[idx]--;
+     auto [max, idx] = max_idx(game);
+     if (max > 0) {
+       game.fruits[idx]--;
+     }
+   }
   return game;
 }
 

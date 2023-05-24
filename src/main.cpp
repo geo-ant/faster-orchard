@@ -35,8 +35,9 @@ int main() {
 
   uint32_t total_turns = 0;
   uint32_t total_wins = 0;
-
-  auto thread_count = 1;//std::thread::hardware_concurrency();
+  
+  auto const hw_threads = std::thread::hardware_concurrency();
+  auto thread_count = hw_threads > 0 ? hw_threads : 1;
   cout << "Thread count: " << thread_count << "\n";
   
   auto latch = std::latch{thread_count};
