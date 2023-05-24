@@ -38,7 +38,6 @@ struct GameResult {
 DiceThrow throw_dice() noexcept;
 uint8_t get_uniform_random_number(uint8_t minimum, uint8_t maximum);
 
-
 template<typename S>
 GameResult play_to_finish(GameState game, S strategy) noexcept{
   auto result = GameResult{};
